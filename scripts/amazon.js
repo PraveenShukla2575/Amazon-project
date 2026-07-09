@@ -1,3 +1,5 @@
+import {cart} from '../data/cart.js';
+import {products} from '../data/products.js';
 let productshtml='';
 products.forEach((product) => {
   productshtml+= `
@@ -24,7 +26,7 @@ products.forEach((product) => {
     </div>
 
     <div class="product-quantity-container">
-      <select>
+      <select class="js-quantity-selector-${product.id}">
         <option selected value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -40,7 +42,7 @@ products.forEach((product) => {
 
     <div class="product-spacer"></div>
 
-    <div class="added-to-cart">
+    <div class="added-to-cart js-added-to-cart-${product.id}">
       <img src="images/icons/checkmark.png">
       Added
     </div>
@@ -51,13 +53,14 @@ products.forEach((product) => {
     </button>
   </div>`;
 });
+let disappearingid;
 document.querySelector('.js-products-grid')
   .innerHTML=productshtml;
 document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
     button.addEventListener('click',() => {
       const productId = button.dataset.productId;
-
+      const quantity_to_add = document.querySelector(`.js-quantity-selector-${productId}`).value;
       let matchingitem;
       cart.forEach((item) => {
         if(productId === item.productId)
@@ -67,16 +70,15 @@ document.querySelectorAll('.js-add-to-cart')
       });
       if(matchingitem)
       {
-        matchingitem.quantity++;
+        matchingitem.quantity+=Number(quantity_to_add);
       }
       else
       {
         cart.push({
         productId:productId,
-        quantity:1
+        quantity:Number(quantity_to_add)
         });
       }
-
       let cartQuantity=0;
       cart.forEach((item) => {
         cartQuantity+=item.quantity;
@@ -84,5 +86,12 @@ document.querySelectorAll('.js-add-to-cart')
 
       document.querySelector('.js-cart-quantity')
         .innerHTML=cartQuantity;
+
+      const added_message = document.querySelector(`.js-added-to-cart-${productId}`);
+      added_message.classList.add('added-message-display');
+      clearTimeout(disappearingid);
+      disappearingid = setTimeout(() => {
+        added_message.classList.remove('added-message-display');
+      }, 2000);
     });
 });
