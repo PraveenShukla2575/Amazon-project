@@ -1,5 +1,6 @@
-import {cart} from '../data/cart.js';
+import {cart,addtocart} from '../data/cart.js';
 import {products} from '../data/products.js';
+import { formatcurrency } from './utils/money.js';
 let productshtml='';
 products.forEach((product) => {
   productshtml+= `
@@ -22,7 +23,7 @@ products.forEach((product) => {
     </div>
 
     <div class="product-price">
-      $${(product.priceCents/100).toFixed(2)}
+      $${formatcurrency(product.priceCents)}
     </div>
 
     <div class="product-quantity-container">
@@ -56,42 +57,30 @@ products.forEach((product) => {
 let disappearingid;
 document.querySelector('.js-products-grid')
   .innerHTML=productshtml;
+
+
+function updatecartQunatity(productId)
+{
+  let cartQuantity=0;
+  cart.forEach((cartitem) => {
+    cartQuantity+=cartitem.quantity;
+  });
+
+  document.querySelector('.js-cart-quantity')
+    .innerHTML=cartQuantity;
+
+  const added_message = document.querySelector(`.js-added-to-cart-${productId}`);
+  added_message.classList.add('added-message-display');
+  clearTimeout(disappearingid);
+  disappearingid = setTimeout(() => {
+    added_message.classList.remove('added-message-display');
+  }, 2000);
+}
 document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
     button.addEventListener('click',() => {
       const productId = button.dataset.productId;
-      const quantity_to_add = document.querySelector(`.js-quantity-selector-${productId}`).value;
-      let matchingitem;
-      cart.forEach((item) => {
-        if(productId === item.productId)
-        {
-          matchingitem=item;
-        }
-      });
-      if(matchingitem)
-      {
-        matchingitem.quantity+=Number(quantity_to_add);
-      }
-      else
-      {
-        cart.push({
-        productId:productId,
-        quantity:Number(quantity_to_add)
-        });
-      }
-      let cartQuantity=0;
-      cart.forEach((item) => {
-        cartQuantity+=item.quantity;
-      });
-
-      document.querySelector('.js-cart-quantity')
-        .innerHTML=cartQuantity;
-
-      const added_message = document.querySelector(`.js-added-to-cart-${productId}`);
-      added_message.classList.add('added-message-display');
-      clearTimeout(disappearingid);
-      disappearingid = setTimeout(() => {
-        added_message.classList.remove('added-message-display');
-      }, 2000);
+      addtocart(productId);
+      updatecartQunatity(productId);
     });
 });
