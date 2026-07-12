@@ -1,4 +1,4 @@
-import {cart,removefromcart} from '../data/cart.js';
+import {cart,removefromcart,total_item_in_cart} from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatcurrency } from './utils/money.js';
 let cartsummaryHTML='';
@@ -102,3 +102,6 @@ document.querySelectorAll('.js-delete-link')
       container.remove();
     });
   });
+  let total_items = total_item_in_cart();
+document.querySelector('.js-update-quantity')
+    .innerHTML = `${total_items}`;
