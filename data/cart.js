@@ -57,3 +57,11 @@ export function total_item_in_cart()
   });
   return total_items;
 }
+export function calculatecart_quantity()
+{
+  let cartQuantity=0;
+  cart.forEach((cartitem) => {
+    cartQuantity+=cartitem.quantity;
+  });
+  return cartQuantity;
+}
