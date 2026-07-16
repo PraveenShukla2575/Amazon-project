@@ -224,3 +224,7 @@
 {
   display: initial;
 }
+.cart-item-container.is-editing-quantity .quantity-label,
+.cart-item-container.is-editing-quantity .update-quantity-link{
+  display: none;
+}

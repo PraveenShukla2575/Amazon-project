@@ -10,7 +10,7 @@ if(!cart)
   }];
 }
 
-function savetostorage()
+export function savetostorage()
 {
   localStorage.setItem('cart',JSON.stringify(cart));
 }
@@ -64,4 +64,30 @@ export function calculatecart_quantity()
     cartQuantity+=cartitem.quantity;
   });
   return cartQuantity;
+}
+export function updatequantity(productId,quantity)
+{
+  let matchingitem;
+  cart.forEach((cartitem) => {
+    if(cartitem.productId === productId)
+    {
+      matchingitem=cartitem;
+    }
+  });
+  if(quantity<=0)
+  {
+    alert('Enter Valid Input');
+  }
+  else if(quantity>=1000)
+  {
+    alert('Not Possible Quantity');
+  }
+  else
+  {
+    if(matchingitem)
+    {
+      matchingitem.quantity=Number(quantity);
+    }
+    savetostorage();
+  }
 }
