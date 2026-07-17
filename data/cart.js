@@ -95,3 +95,15 @@ export function updatequantity(productId,quantity)
     savetostorage();
   }
 }
+export function updatedeliveryOption(productId,deliveryOptionId)
+{
+  let matchingitem;
+  cart.forEach((cartitem) => {
+    if(productId === cartitem.productId)
+    {
+      matchingitem=cartitem;
+    }
+  });
+  matchingitem.deliveryOptionId = deliveryOptionId;
+  savetostorage();
+}
