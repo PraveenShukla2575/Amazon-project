@@ -1,0 +1,66 @@
+import { cart } from '../../data/cart.js';
+import { getproduct } from '../../data/products.js';
+import { getdeliveryOption } from '../../data/deliveryOptions.js';
+import { formatcurrency } from '../utils/money.js'
+export function renderpaymentsummary()
+{
+  let productPriceCents=0;
+  let shippingPriceCents=0;
+  cart.forEach((cartitem) => {
+    const product = getproduct(cartitem.productId);
+    productPriceCents+=product.priceCents*cartitem.quantity;
+
+    const deliveryOption = getdeliveryOption(cartitem.deliveryOptionId);
+    shippingPriceCents+=deliveryOption.priceCents;
+  });
+  const totalBeforeTaxCents = productPriceCents+shippingPriceCents;
+  const taxCents = (totalBeforeTaxCents*0.1);
+  const totalCents = totalBeforeTaxCents + taxCents;
+  const paymentSummaryHtml = `
+    <div class="payment-summary-title">
+      Order Summary
+    </div>
+
+    <div class="payment-summary-row">
+      <div>Items (3):</div>
+      <div class="payment-summary-money">
+        $${formatcurrency(productPriceCents)}
+      </div>
+    </div>
+
+    <div class="payment-summary-row">
+      <div>Shipping &amp; handling:</div>
+      <div class="payment-summary-money">
+        $${formatcurrency(shippingPriceCents)}
+      </div>
+    </div>
+
+    <div class="payment-summary-row subtotal-row">
+      <div>Total before tax:</div>
+      <div class="payment-summary-money">
+        $${formatcurrency(totalBeforeTaxCents)}
+      </div>
+    </div>
+
+    <div class="payment-summary-row">
+      <div>Estimated tax (10%):</div>
+      <div class="payment-summary-money">
+        $${formatcurrency(taxCents)}
+      </div>
+    </div>
+
+    <div class="payment-summary-row total-row">
+      <div>Order total:</div>
+      <div class="payment-summary-money">
+        $${formatcurrency(totalCents)}
+      </div>
+    </div>
+
+    <button class="place-order-button button-primary">
+      Place your order
+    </button>
+  `;
+
+  document.querySelector('.js-payment-summary')
+    .innerHTML = paymentSummaryHtml;
+}
