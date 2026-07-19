@@ -128,7 +128,7 @@ export function renderOrdersummary()
     {
     let cartQuantity = calculatecart_quantity();
     document.querySelector('.js-update-quantity')
-      .innerHTML=`${cartQuantity}`;
+      .innerHTML=`${cartQuantity} items`;
     }
     document.querySelectorAll('.js-update-quantity-link')
     .forEach((link) => {
@@ -150,6 +150,7 @@ export function renderOrdersummary()
           document.querySelector(`.js-quantity-label-${saveproductId}`)
             .innerHTML=`${new_quantity}`;
           updateCartQuantity();
+          renderpaymentsummary();
         }
         const container = document.querySelector(`.js-cart-item-container-${saveproductId}`);
         container.classList.remove('is-editing-quantity');
