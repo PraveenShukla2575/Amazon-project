@@ -1,14 +1,14 @@
-class Cart {
+export class Cart {
   cartItems = undefined;//or simply cartItems;
   #localStorageKey = undefined;//or simply localStorageKey;
 
   constructor(localStorageKey)
   {
     this.#localStorageKey = localStorageKey;
-    this.#loadFromStorage();
+    this.loadFromStorage();
   }
 
-  #loadFromStorage()
+  loadFromStorage()
   {
     this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
     if(!this.cartItems)
@@ -135,10 +135,6 @@ class Cart {
 }
 
 
-const cart= new Cart('cart-oop');
+export const cart= new Cart('cart-oop');
 const businessCart= new Cart('cart-business');
-
-console.log(cart);
-console.log(businessCart);
-
 

@@ -1,4 +1,4 @@
-import {cart,removefromcart,total_item_in_cart,calculatecart_quantity,updatequantity, savetostorage,updatedeliveryOption} from '../../data/cart.js';
+import { cart } from '../../data/cart-class.js';
 import { products , getproduct } from '../../data/products.js';
 import formatcurrency  from '../utils/money.js';
 import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
@@ -13,7 +13,7 @@ export function renderOrdersummary()
 {
   updateCartQuantity();
   let cartsummaryHTML='';
-    cart.forEach((cartitem) => {
+    cart.cartItems.forEach((cartitem) => {
     const productId = cartitem.productId;
     const matchingproduct = getproduct(productId);
     const deliveryOptionId = cartitem.deliveryOptionId;
@@ -120,7 +120,7 @@ export function renderOrdersummary()
     .forEach((link) => {
       link.addEventListener('click',() => {
         const productId = link.dataset.productId;
-        removefromcart(productId);
+        cart.removefromcart(productId);
         const container = document.querySelector(`.js-cart-item-container-${productId}`);
         if(container) container.remove();
         updateCartQuantity();
@@ -129,7 +129,7 @@ export function renderOrdersummary()
     });
     function updateCartQuantity()
     {
-    let cartQuantity = calculatecart_quantity();
+    let cartQuantity = cart.calculatecart_quantity();
     document.querySelector('.js-update-quantity')
       .innerHTML=`${cartQuantity} items`;
     }
@@ -147,9 +147,9 @@ export function renderOrdersummary()
       const handle_save = () => {
         const quantity_input=document.querySelector(`.js-quantity-input-${saveproductId}`)
         const new_quantity = Number(quantity_input.value);
-        updatequantity(saveproductId,new_quantity);
         if(new_quantity>0 && new_quantity<1000)
         {
+          cart.updatequantity(saveproductId,new_quantity);
           document.querySelector(`.js-quantity-label-${saveproductId}`)
             .innerHTML=`${new_quantity}`;
           updateCartQuantity();
@@ -177,7 +177,7 @@ export function renderOrdersummary()
     .forEach((element) => {
       element.addEventListener('click',() => {
         const {productId,deliveryOptionId} = element.dataset;
-        updatedeliveryOption(productId,deliveryOptionId);
+        cart.updatedeliveryOption(productId,deliveryOptionId);
         renderOrdersummary();
         renderpaymentsummary();
       })
