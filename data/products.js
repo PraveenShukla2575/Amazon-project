@@ -777,6 +777,34 @@ export const products = [
 });
 */
 export let products = [];
+
+export function loadProductsFetch()
+{
+  const Promise = fetch(
+    'https://supersimplebackend.dev/products'
+  ).then((response) => {
+    return response.json();
+  }).then((productsData) => {
+    products = productsData.map((productDetails) => {
+      if(productDetails.type === 'clothing')
+      {
+        return new Clothing(productDetails);
+      }
+      else if(productDetails.type === 'appliance')
+      {
+        return new Appliance(productDetails);
+      }
+      return new Product(productDetails);
+    });
+  });
+
+  return Promise;
+}
+/*
+loadProductsFetch().then(() => {
+  console.log('Next Step');
+});
+*/
 export function loadProducts(fun)
 {
   const xhr = new XMLHttpRequest();
