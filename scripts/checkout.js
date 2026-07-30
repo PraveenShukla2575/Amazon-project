@@ -4,8 +4,24 @@ import { loadProducts,loadProductsFetch } from "../data/products.js";
 import { loadCart } from "../data/cart.js";
 // import '../data/backend-practice.js';
 
+
+async function loadPage() 
+{
+  await loadProductsFetch();
+  
+  await new Promise((resolve) => {
+    loadCart(() => {
+      resolve();
+    });
+  });
+
+  renderOrdersummary();
+  renderpaymentsummary();
+}
+loadPage();
 //Doing same task using three methods
 //Using Promise.all
+/*
 Promise.all([
   loadProductsFetch(),
   new Promise((resolve) => {
@@ -18,7 +34,7 @@ Promise.all([
   renderOrdersummary();
   renderpaymentsummary();
 });
-
+*/
 /*
 //Using Only promise
 new Promise((resolve) => {
