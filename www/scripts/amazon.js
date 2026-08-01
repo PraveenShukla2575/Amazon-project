@@ -94,3 +94,16 @@ function renderProductGrid()
       .innerHTML=cartQuantity;
   }
 }
+
+import { App } from '@capacitor/app';
+
+// Listen for the native Android back button press
+App.addListener('backButton', ({ canGoBack }) => {
+  // Check if there is history in the browser session to go back to
+  if (window.location.pathname !== '/amazon.html' && window.location.pathname !== '/index.html' && window.history.length > 1) {
+    window.history.back();
+  } else {
+    // If on the main/home page or no history left, exit the app
+    App.exitApp();
+  }
+});
