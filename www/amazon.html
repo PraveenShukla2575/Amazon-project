@@ -57,5 +57,30 @@
     </div>
 
     <script type="module" src="scripts/amazon.js"></script>
+    <script src="capacitor.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Check if window.Capacitor actually exists before trying to use plugins
+        if (window.Capacitor && window.Capacitor.isPluginAvailable('App')) {
+          const App = window.Capacitor.Plugins.App;
+
+          App.addListener('backButton', () => {
+            const path = window.location.pathname.toLowerCase();
+            const isHomePage = 
+              path === '/' || 
+              path.endsWith('/amazon.html') || 
+              path.endsWith('/index.html');
+
+            if (!isHomePage) {
+              window.history.back();
+            } else {
+              App.exitApp();
+            }
+          });
+        } else {
+          console.log('Capacitor native runtime not detected. Back button listener skipped (Running in web browser).');
+        }
+      });
+    </script>
   </body>
 </html>
