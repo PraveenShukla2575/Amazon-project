@@ -1,0 +1,21 @@
+{
+  "name": "amazon-project",
+  "version": "1.0.0",
+  "description": "This project is a fully functional front-end clone of the Amazon e-commerce website, built to master core and advanced JavaScript concepts. Following the curriculum from the \"Super Simple Dev\" JavaScript course, this repository demonstrates how a modern e-commerce platform is structured behind the scenes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PraveenShukla2575/Amazon-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/PraveenShukla2575/Amazon-project/issues"
+  },
+  "homepage": "https://github.com/PraveenShukla2575/Amazon-project#readme"
+}
